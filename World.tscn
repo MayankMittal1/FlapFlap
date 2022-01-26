@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/Player/bird1.png" type="Texture" id=2]
+[ext_resource path="res://WallNode.tscn" type="PackedScene" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 12.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 8, 7 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 8.5, 7.5 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 10, 150 )
+
+[node name="World" type="Node2D"]
+
+[node name="PlayerNode" type="Node2D" parent="."]
+
+[node name="Player" type="KinematicBody2D" parent="PlayerNode"]
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="PlayerNode/Player"]
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerNode/Player"]
+shape = SubResource( 6 )
+
+[node name="Detector" type="Area2D" parent="PlayerNode/Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerNode/Player/Detector"]
+shape = SubResource( 7 )
+
+[node name="Resetter" type="Area2D" parent="PlayerNode/Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerNode/Player/Resetter"]
+position = Vector2( -280, 0 )
+shape = SubResource( 8 )
+
+[node name="WallNode" parent="." instance=ExtResource( 3 )]
+position = Vector2( 300, 30 )
+
+[node name="WallNode2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 450, -20 )
+
+[node name="WallNode3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 600, -50 )
+
+[node name="WallNode4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 750, 30 )
+
+[node name="WallNode5" parent="." instance=ExtResource( 3 )]
+position = Vector2( 900, -20 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[connection signal="area_entered" from="PlayerNode/Player/Detector" to="PlayerNode/Player" method="_on_Detector_area_entered"]
+[connection signal="body_entered" from="PlayerNode/Player/Detector" to="PlayerNode/Player" method="_on_Detector_body_entered"]
+[connection signal="body_entered" from="PlayerNode/Player/Resetter" to="PlayerNode/Player" method="_on_Resetter_body_entered"]
