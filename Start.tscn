@@ -1,0 +1,229 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://assets/demo-img-1.png" type="Texture" id=1]
+[ext_resource path="res://bgscroll.gd" type="Script" id=2]
+[ext_resource path="res://assets/Player/bird1.png" type="Texture" id=3]
+[ext_resource path="res://assets/Extras/CAVEMAN_.TTF" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/Extras/unmuted.png" type="Texture" id=5]
+[ext_resource path="res://assets/Extras/muted.png" type="Texture" id=6]
+[ext_resource path="res://assets/Extras/Death By Glamour.mp3" type="AudioStream" id=7]
+[ext_resource path="res://muting.gd" type="Script" id=8]
+[ext_resource path="res://assets/Extras/MonsterFriendBack.otf" type="DynamicFontData" id=9]
+[ext_resource path="res://assets/Extras/PanelNoDots.png" type="Texture" id=10]
+[ext_resource path="res://assets/Extras/Info_Unpressed.png" type="Texture" id=11]
+[ext_resource path="res://stats.gd" type="Script" id=12]
+[ext_resource path="res://assets/Extras/Info_Pressed.png" type="Texture" id=13]
+[ext_resource path="res://assets/Extras/Play_Unpressed.png" type="Texture" id=14]
+[ext_resource path="res://Play_Pressed.png" type="Texture" id=15]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 12.0
+} ]
+
+[sub_resource type="DynamicFont" id=6]
+size = 100
+font_data = ExtResource( 4 )
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 6 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 32
+font_data = ExtResource( 9 )
+
+[sub_resource type="Theme" id=9]
+default_font = SubResource( 8 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 50
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 20
+font_data = ExtResource( 9 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource( 2 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1024, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 512, 300 )
+scale = Vector2( 2.3, 2.4 )
+texture = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 512, 300 )
+scale = Vector2( 3, 3 )
+frames = SubResource( 5 )
+frame = 3
+playing = true
+
+[node name="Label" type="Label" parent="."]
+margin_left = 337.0
+margin_top = 25.0
+margin_right = 377.0
+margin_bottom = 39.0
+theme = SubResource( 7 )
+custom_colors/font_color = Color( 0.866667, 0.113725, 0.113725, 1 )
+text = "flap"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 337.0
+margin_top = 100.0
+margin_right = 686.0
+margin_bottom = 222.0
+theme = SubResource( 7 )
+custom_colors/font_color = Color( 0.113725, 0.384314, 0.866667, 1 )
+text = "flap"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_left = 409.8
+margin_top = 350.0
+margin_right = 2457.8
+margin_bottom = 1374.0
+rect_scale = Vector2( 0.1, 0.1 )
+texture_normal = ExtResource( 14 )
+texture_pressed = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource( 8 )
+
+[node name="TextureButton" type="TextureButton" parent="Node2D"]
+margin_left = 25.0
+margin_top = 500.0
+margin_right = 2497.0
+margin_bottom = 1710.0
+rect_scale = Vector2( 0.035, 0.035 )
+toggle_mode = true
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D"]
+stream = ExtResource( 7 )
+autoplay = true
+
+[node name="Node2D2" type="Node2D" parent="."]
+script = ExtResource( 12 )
+
+[node name="Node2D" type="Node2D" parent="Node2D2"]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Node2D2/Node2D"]
+margin_left = 256.0
+margin_top = 50.0
+margin_right = 768.0
+margin_bottom = 562.0
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Node2D2/Node2D"]
+margin_left = 373.0
+margin_top = 150.0
+margin_right = 651.0
+margin_bottom = 183.0
+theme = SubResource( 9 )
+text = "HIghscore"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="Node2D2/Node2D"]
+margin_left = 256.0
+margin_top = 200.0
+margin_right = 768.0
+margin_bottom = 250.0
+theme = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="Node2D2/Node2D"]
+margin_left = 373.0
+margin_top = 300.0
+margin_right = 651.0
+margin_bottom = 333.0
+theme = SubResource( 9 )
+text = "CREDITS"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" type="Label" parent="Node2D2/Node2D"]
+margin_left = 373.0
+margin_top = 350.0
+margin_right = 651.0
+margin_bottom = 383.0
+theme = SubResource( 9 )
+custom_fonts/font = SubResource( 11 )
+text = "MAYANK
+PRAGYANSH
+mUSIC : TOBY FOX
+ASSETS : ITCH.IO"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="Node2D2"]
+margin_left = 900.0
+margin_top = 490.0
+margin_right = 2948.0
+margin_bottom = 1514.0
+rect_scale = Vector2( 0.05, 0.05 )
+toggle_mode = true
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="TextureButton" to="ParallaxBackground" method="_on_TextureButton_pressed"]
+[connection signal="toggled" from="Node2D/TextureButton" to="Node2D" method="_on_TextureButton_toggled"]
+[connection signal="toggled" from="Node2D2/TextureButton" to="Node2D2" method="_on_TextureButton_toggled"]
