@@ -11,7 +11,12 @@ config_version=4
 [application]
 
 config/name="FlapFlap"
+run/main_scene="res://Start.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameState="*res://game_state.gd"
 
 [input]
 

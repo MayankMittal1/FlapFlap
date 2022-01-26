@@ -7,15 +7,19 @@ var motion = Vector2()
 var score
 var WallNode = preload("res://WallNode.tscn")
 
+signal scored(score)
+signal death(value)
+
 func _ready():
+	GameState.wall_speed = Vector2(-2, 0)
 	GRAVITY = 10
 	FLAP = 200
 	score = 0
 	
 func _physics_process(delta):
 	if self.position.y > 160 or self.position.y < -160:
+		lmao_ded()
 		pass
-		#lmao_ded()
 	motion.y += GRAVITY
 	if motion.y > MAXFALLSPEED:
 		motion.y = MAXFALLSPEED
@@ -36,10 +40,26 @@ func _on_Resetter_body_entered(body):
 
 func _on_Detector_body_entered(body):
 	if body.name=="Wall":
+		lmao_ded()
 		#gameover
 		pass
 
 
 func _on_Detector_area_entered(area):
-	#increament score
+	if area.name == "Area2D":
+		score += 1
+		emit_signal("scored", score)
 	pass # Replace with function body.
+
+func lmao_ded():
+	GRAVITY = 0
+	FLAP = 0
+	motion = Vector2(0, 0)
+	GameState.wall_speed = Vector2(0, 0)
+	if score > GameState.highscore:
+		emit_signal("death", "highscore!!")
+		GameState.highscore = score
+		GameState.save_game()
+	else:
+		emit_signal("death", "oh no..")
+	pass

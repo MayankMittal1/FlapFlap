@@ -1,8 +1,19 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/Player/bird1.png" type="Texture" id=2]
 [ext_resource path="res://WallNode.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/Background/Background5.png" type="Texture" id=4]
+[ext_resource path="res://assets/Extras/MonsterFriendBack.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://assets/Extras/Megalovania.mp3" type="AudioStream" id=6]
+[ext_resource path="res://sfx.gd" type="Script" id=7]
+[ext_resource path="res://assets/Extras/Cross_Unpressed.png" type="Texture" id=8]
+[ext_resource path="res://assets/Extras/Cross_Pressed.png" type="Texture" id=9]
+[ext_resource path="res://assets/Extras/PanelNoDots.png" type="Texture" id=10]
+[ext_resource path="res://assets/Extras/Play_Unpressed.png" type="Texture" id=11]
+[ext_resource path="res://Play_Pressed.png" type="Texture" id=12]
+[ext_resource path="res://deathoverlay.gd" type="Script" id=13]
+[ext_resource path="res://Node2D2.gd" type="Script" id=14]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -41,7 +52,40 @@ extents = Vector2( 8.5, 7.5 )
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 10, 150 )
 
+[sub_resource type="DynamicFont" id=9]
+size = 20
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=10]
+default_font = SubResource( 9 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 32
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=12]
+default_font = SubResource( 11 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 40
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=14]
+default_font = SubResource( 13 )
+
 [node name="World" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Node2D"]
+position = Vector2( -128, 0 )
+scale = Vector2( 1, 1.2 )
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="Node2D"]
+position = Vector2( 128, 0 )
+scale = Vector2( 1, 1.2 )
+texture = ExtResource( 4 )
 
 [node name="PlayerNode" type="Node2D" parent="."]
 
@@ -86,6 +130,83 @@ position = Vector2( 900, -20 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
+[node name="Node2D2" type="Node2D" parent="."]
+script = ExtResource( 14 )
+
+[node name="Label" type="Label" parent="Node2D2"]
+margin_left = -50.0
+margin_top = -145.0
+margin_right = 50.0
+margin_bottom = -125.0
+theme = SubResource( 10 )
+text = "score"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="Node2D2"]
+margin_left = -250.0
+margin_top = -120.0
+margin_right = 250.0
+margin_bottom = -87.0
+theme = SubResource( 12 )
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+autoplay = true
+script = ExtResource( 7 )
+
+[node name="Node2D3" type="Node2D" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="Node2D3"]
+margin_left = -102.4
+margin_top = -80.0
+margin_right = 409.6
+margin_bottom = 432.0
+rect_scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 10 )
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Node2D3/TextureRect"]
+margin_top = 100.0
+margin_right = 512.0
+margin_bottom = 140.0
+theme = SubResource( 14 )
+text = "OH NO.."
+align = 1
+
+[node name="TextureButton" type="TextureButton" parent="Node2D3/TextureRect"]
+margin_left = 48.16
+margin_top = 300.0
+margin_right = 2096.16
+margin_bottom = 1324.0
+rect_scale = Vector2( 0.08, 0.08 )
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 9 )
+
+[node name="TextureButton2" type="TextureButton" parent="Node2D3/TextureRect"]
+margin_left = 300.0
+margin_top = 300.0
+margin_right = 2348.0
+margin_bottom = 1324.0
+rect_scale = Vector2( 0.08, 0.08 )
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="area_entered" from="PlayerNode/Player/Detector" to="PlayerNode/Player" method="_on_Detector_area_entered"]
 [connection signal="body_entered" from="PlayerNode/Player/Detector" to="PlayerNode/Player" method="_on_Detector_body_entered"]
 [connection signal="body_entered" from="PlayerNode/Player/Resetter" to="PlayerNode/Player" method="_on_Resetter_body_entered"]
+[connection signal="pressed" from="Node2D3/TextureRect/TextureButton" to="Node2D3/TextureRect" method="_on_TextureButton_pressed"]
+[connection signal="pressed" from="Node2D3/TextureRect/TextureButton2" to="Node2D3/TextureRect" method="_on_TextureButton2_pressed"]
